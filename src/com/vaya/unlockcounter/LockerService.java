@@ -18,8 +18,10 @@ public class LockerService extends Service {
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_USER_PRESENT);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
-        BroadcastReceiver mReceiver = new ScreenBroadReceiver();
+        BroadcastReceiver mReceiver = new ScreenBroadReceiver(this);
         registerReceiver(mReceiver, filter);
+
+        SQLite db = new SQLite(this);
     }
 
 

@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
 
+import java.util.List;
+
 public class MainActivity extends Activity {
 	
 	public static final String LOG_TAG = "UC_MAIN";
@@ -23,6 +25,9 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+        SQLite db = new SQLite(this);
+        List<String> d = db.get_log();
+        Log.d(LOG_TAG, "log : " + d.toString());
 	}
 	
 	@Override
