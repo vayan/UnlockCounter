@@ -16,8 +16,8 @@ public class SQLite  extends SQLiteOpenHelper {
     type_event in the db : 1 == unlock , 0 == lock
      */
 
-    public static final int DB_SCREEN_UNLOCK = 1;
-    public static final int DB_SCREEN_LOCK = 0;
+    public static final Integer DB_SCREEN_UNLOCK = 1;
+    public static final Integer DB_SCREEN_LOCK = 0;
 
 
     public static final String LOG_TAG = "UC_SQLITE";
@@ -48,6 +48,40 @@ public class SQLite  extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
 
+    }
+
+    public List<String> get_unlock_log() {
+        List<String> lock_log = new ArrayList<String>();
+        SQLiteDatabase bdd = this.getWritableDatabase();
+
+        Cursor cursor = bdd.query(DB_TABLE_NAME,
+                DB_ALL_COLUMNS, "type_event = " + DB_SCREEN_UNLOCK.toString(), null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            lock_log.add(cursor.getString(1));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        bdd.close();
+        return lock_log;
+    }
+
+    public List<String> get_lock_log() {
+        List<String> lock_log = new ArrayList<String>();
+        SQLiteDatabase bdd = this.getWritableDatabase();
+
+        Cursor cursor = bdd.query(DB_TABLE_NAME,
+                DB_ALL_COLUMNS, "type_event = " + DB_SCREEN_LOCK.toString(), null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            lock_log.add(cursor.getString(1));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        bdd.close();
+        return lock_log;
     }
 
     public List<String> get_log() {

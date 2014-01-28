@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -27,7 +28,15 @@ public class MainActivity extends Activity {
 		super.onResume();
         SQLite db = new SQLite(this);
         List<String> d = db.get_log();
-        Log.d(LOG_TAG, "log : " + d.toString());
+        List<String> lock =  db.get_lock_log();
+        List<String> unlock =  db.get_unlock_log();
+
+        Log.d(LOG_TAG, "log : " + d.toString() +
+                " \n || Number of unlock :" + Integer.toString(unlock.size()) +
+                " \n || Number of lock :" + Integer.toString(lock.size())
+        );
+        TextView counter = (TextView) findViewById(R.id.CounterUnlock);
+        counter.setText(Integer.toString(unlock.size()));
 	}
 	
 	@Override
