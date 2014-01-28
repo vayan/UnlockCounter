@@ -16,12 +16,14 @@ public class ScreenBroadReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            SQLite db = new SQLite(this.ctxt);
-            db.add_log(SQLite.DB_SCREEN_LOCK);
+            DB db = new DB(this.ctxt);
+            db.add_log(DB.DB_SCREEN_LOCK);
+            db.close();
             Log.d(LOG_TAG, "Screen locked");
         } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
-            SQLite db = new SQLite(this.ctxt);
-            db.add_log(SQLite.DB_SCREEN_UNLOCK);
+            DB db = new DB(this.ctxt);
+            db.add_log(DB.DB_SCREEN_UNLOCK);
+            db.close();
             Log.d(LOG_TAG, "Screen unlock");
         }
     }

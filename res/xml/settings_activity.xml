@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="foo" >
+        <EditTextPreference
+                android:defaultValue="foo"
+                android:dialogTitle="foo"
+                android:key="foo"
+                android:summary="foo"
+                android:title="foo" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="bar" >
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="bar"
+                android:summary="bar"
+                android:title="bar" />
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="use_dark_theme"
+                android:summary="Use the ugly dark theme (require restart)"
+                android:title="Use dark theme" />
+    </PreferenceCategory>
+</PreferenceScreen>

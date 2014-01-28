@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class SQLite  extends SQLiteOpenHelper {
+public class DB extends SQLiteOpenHelper {
     /*
     type_event in the db : 1 == unlock , 0 == lock
      */
@@ -27,14 +27,14 @@ public class SQLite  extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
     private static final String DB_CREATE =
             "CREATE TABLE log (\n" +
-            " _id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-            " type_event INTEGER NOT NULL DEFAULT '0',\n" +
-            " date TEXT NOT NULL\n" +
-            ");";
+                    " _id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                    " type_event INTEGER NOT NULL DEFAULT '0',\n" +
+                    " date TEXT NOT NULL\n" +
+                    ");";
     private String[] DB_ALL_COLUMNS = {"type_event",
             "date" };
 
-    public SQLite(Context context) {
+    public DB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.ctxt = context;
     }
