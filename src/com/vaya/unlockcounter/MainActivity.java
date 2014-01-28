@@ -3,7 +3,9 @@ package com.vaya.unlockcounter;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +16,14 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     public static final String LOG_TAG = "UC_MAIN";
+    private static final String activity_title = "Unlock Counter";
+
+    public void updateTheme() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (sharedPref.getBoolean("use_dark_theme", false)) setTheme(android.R.style.Theme_Holo);
+        else setTheme(android.R.style.Theme_Holo_Light);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -33,12 +43,12 @@ public class MainActivity extends Activity {
         startService(new Intent(MainActivity.this, LockerService.class));
         super.onCreate(savedInstanceState);
 
+        updateTheme();
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
         setContentView(R.layout.activity_main);
-
 
         Log.d(LOG_TAG, "MainActivity created");
     }

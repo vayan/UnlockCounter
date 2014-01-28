@@ -51,6 +51,8 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "Create activity settings");
 
+        updateTheme();
+
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(activity_title);
