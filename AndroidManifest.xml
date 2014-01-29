@@ -4,6 +4,8 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="18" />
@@ -25,6 +27,11 @@
         <activity android:name=".SettingsActivity"
                   android:parentActivityName="MainActivity"/>
         <service android:name=".LockerService"/>
+        <receiver android:name=".BroadReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

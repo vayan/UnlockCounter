@@ -19,7 +19,7 @@ public class LockerService extends Service {
         super.onCreate();
         IntentFilter filter = new IntentFilter(Intent.ACTION_USER_PRESENT);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
-        BroadcastReceiver mReceiver = new ScreenBroadReceiver(this);
+        BroadcastReceiver mReceiver = new BroadReceiver();
         registerReceiver(mReceiver, filter);
         Log.d(LOG_TAG, "Service started");
     }

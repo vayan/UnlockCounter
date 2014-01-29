@@ -15,12 +15,15 @@ import android.widget.*;
 import com.jjoe64.graphview.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     public static final String LOG_TAG = "UC_MAIN";
+    public static final Double[] timestamp_to_reduce = new Double[] {86400000d, 604800000d, 2628000000d, 15770000000d, 31540000000000d};
     private static final String activity_title = "Unlock Counter";
+    private GraphView graphView = null;
 
     public void updateTheme() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -29,11 +32,46 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         else setTheme(android.R.style.Theme_Holo_Light);
     }
 
+    private int get_current_spinner_selection() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPref.getInt("spinner_selection", 0);
+    }
+
+    private void refresh_all() {
+        int numberlock = 0;
+        int current_selection = get_current_spinner_selection();
+        Long now = Calendar.getInstance().getTimeInMillis();
+
+        DB db = new DB(this);
+        List<String[]> d = db.get_log();
+        List<String[]> d_aftertime = new ArrayList<String[]>();
+
+        if (d.size() > 0) {
+            for (int i = 0; i < d.size(); i++) {
+                Log.d(LOG_TAG, "lock = " + d.get(i)[0] + " other is = " + Double.toString(now - timestamp_to_reduce[current_selection]));
+                if ( Double.parseDouble(d.get(i)[0])  >= now - timestamp_to_reduce[current_selection]) {
+                    numberlock++;
+                    Log.d(LOG_TAG, "this one ok");
+                    d_aftertime.add(new String[] {d.get(i)[0], d.get(i)[1]});
+                }
+            }
+            Log.d(LOG_TAG, "log : " + d.get(0)[0] + " / " +  d.get(0)[1] +
+                    " \n || Number of unlock :" + Integer.toString(d.size()) );
+            makeGraph(d_aftertime);
+        }
+        TextView counter = (TextView) findViewById(R.id.CounterUnlock);
+        counter.setText(Integer.toString(numberlock));
+    }
+
     private void makeGraph(List<String[]> data) {
         //TODO : Probably a lot of stuff to optimize here if lag
         GraphView.GraphViewData[] datagraph = new GraphView.GraphViewData[24];
         Integer[] perhour = new Integer[24];
+        LinearLayout layout = (LinearLayout) findViewById(R.id.graph1);
 
+        if (this.graphView != null) {
+            layout.removeView(this.graphView);
+        }
 
         for (int j = 0; j <= 23; j++) {
             perhour[j] = 0;
@@ -60,8 +98,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         graphView.getGraphViewStyle().setGridColor(Color.TRANSPARENT); //remove grid
 
         //try to remove left label
-        graphView.getGraphViewStyle().setVerticalLabelsWidth(0);
-        graphView.getGraphViewStyle().setNumVerticalLabels(0);
         graphView.getGraphViewStyle().setVerticalLabelsColor(Color.TRANSPARENT);
 
 
@@ -73,8 +109,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 }
         });
 
-        LinearLayout layout = (LinearLayout) findViewById(R.id.graph1);
         layout.addView(graphView);
+        this.graphView = graphView;
     }
 
     @Override
@@ -107,11 +143,13 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.date_selection_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+        spinner.setSelection(get_current_spinner_selection());
+        spinner.setAdapter(adapter);
 
-        DB db = new DB(this);
-        makeGraph(db.get_log());
+
+
+        refresh_all();
 
         Log.d(LOG_TAG, "MainActivity created");
     }
@@ -119,14 +157,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     @Override
     protected void onResume() {
         super.onResume();
-        DB db = new DB(this);
-        List<String[]> d = db.get_log();
-
-        Log.d(LOG_TAG, "log : " + d.get(0)[0] + " / " +  d.get(0)[1] +
-                " \n || Number of unlock :" + Integer.toString(d.size()) );
-        TextView counter = (TextView) findViewById(R.id.CounterUnlock);
-        counter.setText(Integer.toString(d.size()));
-        makeGraph(d);
+        refresh_all();
     }
 
     @Override
@@ -147,8 +178,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //TODO : change sql request + add this as settings
         Log.d(LOG_TAG, "Spinner changed is " + Integer.toString(i));
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("spinner_selection", i);
+        editor.commit();
+
+        refresh_all();
     }
 
     @Override
