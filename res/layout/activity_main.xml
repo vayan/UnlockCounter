@@ -12,6 +12,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/CounterUnlock"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
+            android:text="@string/default_counter"
+            android:textSize="60dp"
+            android:layout_below="@+id/DateSpinner" android:layout_centerHorizontal="true"
+            android:layout_marginTop="66dp"/>
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/DateSpinner"
+            android:layout_alignTop="@+id/textView"
+            android:layout_toRightOf="@+id/textLeftSpinner"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textLeftSpinner"
+            android:id="@+id/textLeftSpinner"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignBottom="@+id/DateSpinner"
+            android:paddingTop="9dp"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/graph1" />
+
 </RelativeLayout>

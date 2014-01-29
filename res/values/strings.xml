@@ -4,5 +4,17 @@
     <string name="app_name">Unlock Counter</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="textLeftSpinner">Show unlock count for the</string>
+    <string name="default_counter">0</string>
+
+
+    <string-array name="date_selection_array">
+        <item>Last 24h</item>
+        <item>Last week</item>
+        <item>last month</item>
+        <item>last 6 months</item>
+        <item>last millenium</item>
+    </string-array>
+
 
 </resources>
