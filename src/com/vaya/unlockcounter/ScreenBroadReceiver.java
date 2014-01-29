@@ -16,9 +16,7 @@ public class ScreenBroadReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-//            DB db = new DB(this.ctxt);
-//            db.add_log(DB.DB_SCREEN_LOCK);
-//            db.close();
+            //we don't use lock event, "sho why do keep it" shut up me.
             Log.d(LOG_TAG, "Screen locked");
         } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
             DB db = new DB(this.ctxt);

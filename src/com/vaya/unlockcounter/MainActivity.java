@@ -30,6 +30,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     private void makeGraph(List<String[]> data) {
+        //TODO : Probably a lot of stuff to optimize here if lag
         GraphView.GraphViewData[] datagraph = new GraphView.GraphViewData[24];
         Integer[] perhour = new Integer[24];
 
@@ -54,8 +55,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         graphView.setHorizontalLabels(new String[]{
                 "00h", "2h", "4h", "6h", "8h", "10h",
                 "12h", "14h", "16h", "18h", "20h", "22h"});
-        graphView.getGraphViewStyle().setGridColor(Color.TRANSPARENT);
 
+
+        graphView.getGraphViewStyle().setGridColor(Color.TRANSPARENT); //remove grid
+
+        //try to remove left label
         graphView.getGraphViewStyle().setVerticalLabelsWidth(0);
         graphView.getGraphViewStyle().setNumVerticalLabels(0);
         graphView.getGraphViewStyle().setVerticalLabelsColor(Color.TRANSPARENT);
@@ -64,6 +68,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         graphView.setCustomLabelFormatter(new CustomLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
+                    //no float number in label
                     return Integer.toString((int) Math.round(value));
                 }
         });
@@ -90,7 +95,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         startService(new Intent(MainActivity.this, LockerService.class));
         super.onCreate(savedInstanceState);
 
-        updateTheme();
+        updateTheme(); //dark theme or not
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
@@ -121,6 +126,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 " \n || Number of unlock :" + Integer.toString(d.size()) );
         TextView counter = (TextView) findViewById(R.id.CounterUnlock);
         counter.setText(Integer.toString(d.size()));
+        makeGraph(d);
     }
 
     @Override
@@ -141,6 +147,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        //TODO : change sql request + add this as settings
         Log.d(LOG_TAG, "Spinner changed is " + Integer.toString(i));
     }
 

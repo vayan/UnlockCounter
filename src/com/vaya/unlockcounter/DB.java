@@ -37,7 +37,8 @@ public class DB extends SQLiteOpenHelper {
     }
 
     @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+    //TODO
     }
 
     public List<String[]> get_log() {
