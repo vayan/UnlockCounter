@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <PreferenceCategory android:title="bar" >
-        <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="bar"
-                android:summary="bar"
-                android:title="bar" />
+    <PreferenceCategory android:title="Global" >
+        <Preference
+                android:key="deletedb"
+                android:summary="Delete all the history, start fresh :)"
+                android:title="Delete History"
+                />
         <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="use_dark_theme"
                 android:summary="Use the ugly dark theme (require restart)"
-                android:title="Use dark theme" />
+                android:title="Use Dark Theme" />
     </PreferenceCategory>
 </PreferenceScreen>

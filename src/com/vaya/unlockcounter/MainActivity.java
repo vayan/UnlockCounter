@@ -25,11 +25,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private static final String activity_title = "Unlock Counter";
     private GraphView graphView = null;
 
-    public void updateTheme() {
+    private void updateTheme() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (sharedPref.getBoolean("use_dark_theme", false)) setTheme(android.R.style.Theme_Holo);
-        else setTheme(android.R.style.Theme_Holo_Light);
+        if (sharedPref.getBoolean("use_dark_theme", false)) setTheme(SettingsActivity.DARK_THEME);
+        else setTheme(SettingsActivity.LIGHT_THEME);
     }
 
     private int get_current_spinner_selection() {

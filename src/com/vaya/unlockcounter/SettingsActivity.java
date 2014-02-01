@@ -12,12 +12,14 @@ import android.util.Log;
 public class SettingsActivity extends Activity {
     public static final String LOG_TAG = "UC_SETTINGS";
     private static final String activity_title = "Settings";
+    public static final Integer DARK_THEME = android.R.style.Theme_Holo;
+    public static final Integer LIGHT_THEME = android.R.style.Theme_Holo_Light_DarkActionBar;
 
-    public void updateTheme() {
+    private void updateTheme() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (sharedPref.getBoolean("use_dark_theme", false)) setTheme(android.R.style.Theme_Holo);
-        else setTheme(android.R.style.Theme_Holo_Light);
+        if (sharedPref.getBoolean("use_dark_theme", false)) setTheme(DARK_THEME);
+        else setTheme(LIGHT_THEME);
     }
 
     public static class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
