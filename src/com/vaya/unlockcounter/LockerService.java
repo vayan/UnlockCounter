@@ -17,11 +17,12 @@ public class LockerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(LOG_TAG, "Service started");
         IntentFilter filter = new IntentFilter(Intent.ACTION_USER_PRESENT);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         BroadcastReceiver mReceiver = new BroadReceiver();
         registerReceiver(mReceiver, filter);
-        Log.d(LOG_TAG, "Service started");
+
     }
 
     @Override

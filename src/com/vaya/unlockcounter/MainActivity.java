@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     private int get_current_spinner_selection() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        Log.d(LOG_TAG, "Spinner settings is : " + Integer.toString(sharedPref.getInt("spinner_selection", 0)));
         return sharedPref.getInt("spinner_selection", 0);
     }
 
@@ -48,19 +49,22 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         if (d.size() > 0) {
             for (int i = 0; i < d.size(); i++) {
-                Log.d(LOG_TAG, "lock = " + d.get(i)[0] + " other is = " + Double.toString(now - timestamp_to_reduce[current_selection]));
+                //Log.d(LOG_TAG, "lock = " + d.get(i)[0] + " other is = " + Double.toString(now - timestamp_to_reduce[current_selection]));
                 if ( Double.parseDouble(d.get(i)[0])  >= now - timestamp_to_reduce[current_selection]) {
                     numberlock++;
-                    Log.d(LOG_TAG, "this one ok");
+                    //Log.d(LOG_TAG, "this one ok");
                     d_aftertime.add(new String[] {d.get(i)[0], d.get(i)[1]});
                 }
             }
-            Log.d(LOG_TAG, "log : " + d.get(0)[0] + " / " +  d.get(0)[1] +
-                    " \n || Number of unlock :" + Integer.toString(d.size()) );
+            //Log.d(LOG_TAG, "log : " + d.get(0)[0] + " / " +  d.get(0)[1] +
+                    //" \n || Number of unlock :" + Integer.toString(d.size()) );
             makeGraph(d_aftertime);
         }
         TextView counter = (TextView) findViewById(R.id.CounterUnlock);
         counter.setText(Integer.toString(numberlock));
+
+        Spinner spinner = (Spinner) findViewById(R.id.DateSpinner);
+        spinner.setSelection(get_current_spinner_selection());
     }
 
     private void makeGraph(List<String[]> data) {
@@ -128,6 +132,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "MainActivity created");
         startService(new Intent(MainActivity.this, LockerService.class));
         super.onCreate(savedInstanceState);
 
@@ -146,18 +151,16 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         spinner.setOnItemSelectedListener(this);
         spinner.setSelection(get_current_spinner_selection());
         spinner.setAdapter(adapter);
-
-
-
         refresh_all();
-
-        Log.d(LOG_TAG, "MainActivity created");
     }
 
     @Override
     protected void onResume() {
+        Log.d(LOG_TAG, "MainActivity resume");
         super.onResume();
         refresh_all();
+
+
     }
 
     @Override
