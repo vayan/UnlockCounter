@@ -98,8 +98,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 "00h", "2h", "4h", "6h", "8h", "10h",
                 "12h", "14h", "16h", "18h", "20h", "22h"});
 
-
         graphView.getGraphViewStyle().setGridColor(Color.TRANSPARENT); //remove grid
+        graphView.getGraphViewStyle().useTextColorFromTheme(this);
+        //graphView.getGraphViewStyle().setNumVerticalLabels(4);
 
         //try to remove left label
         graphView.getGraphViewStyle().setVerticalLabelsColor(Color.TRANSPARENT);
