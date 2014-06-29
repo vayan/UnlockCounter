@@ -2,6 +2,7 @@ package com.vaya.unlockcounter;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.backup.BackupManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;

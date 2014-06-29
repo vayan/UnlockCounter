@@ -6,6 +6,8 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+
+
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="18" />
@@ -14,6 +16,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:backupAgent="mBackupAgent"
+        android:restoreAnyVersion="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.vaya.unlockcounter.MainActivity"
@@ -32,6 +36,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <meta-data android:name="com.google.android.backup.api_key" android:value="AEdPqrEAAAAIZ3nJzxWJfLPj6zF6cf-bGyLZ0u5RPlxew_hCkA" />
     </application>
 
 </manifest>

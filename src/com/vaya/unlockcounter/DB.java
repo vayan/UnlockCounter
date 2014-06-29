@@ -4,14 +4,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class DB extends SQLiteOpenHelper {
+    static final Object sDataLock = new Object();
     public static final String LOG_TAG = "UC_SQLITE";
     private Context ctxt;
     private static final String DB_NAME = "log.db";
@@ -42,32 +45,45 @@ public class DB extends SQLiteOpenHelper {
     }
 
     public List<String[]> get_log() {
-        List<String[]> all_logs = new ArrayList<String[]>();
-        SQLiteDatabase bdd = this.getWritableDatabase();
+        try {
+            synchronized (DB.sDataLock) {
+                List<String[]> all_logs = new ArrayList<String[]>();
+                SQLiteDatabase bdd = this.getWritableDatabase();
 
-        Cursor cursor = bdd.query(DB_TABLE_NAME,
-                DB_ALL_COLUMNS, null, null, null, null, null);
+                Cursor cursor = bdd.query(DB_TABLE_NAME,
+                        DB_ALL_COLUMNS, null, null, null, null, null);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            all_logs.add(new String[] {cursor.getString(0), cursor.getString(1)});
-            cursor.moveToNext();
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    all_logs.add(new String[]{cursor.getString(0), cursor.getString(1)});
+                    cursor.moveToNext();
+                }
+                cursor.close();
+                bdd.close();
+                return all_logs;
+            }
+        } catch (SQLiteException e) {
+            Log.e(LOG_TAG, "Unable to read the db : " + e.toString());
         }
-        cursor.close();
-        bdd.close();
-        return all_logs;
+        return null;
     }
 
     public void add_log() {
-        SQLiteDatabase bdd = this.getWritableDatabase();
-        Long c = Calendar.getInstance().getTimeInMillis();
+        try {
+            synchronized (DB.sDataLock) {
+                SQLiteDatabase bdd = this.getWritableDatabase();
+                Long c = Calendar.getInstance().getTimeInMillis();
 
-        ContentValues values = new ContentValues();
-        values.put("timestamp", c.toString());
-        values.put("hour", Integer.toString(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+                ContentValues values = new ContentValues();
+                values.put("timestamp", c.toString());
+                values.put("hour", Integer.toString(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
 
-        bdd.insert(DB_TABLE_NAME, null, values);
-        bdd.close();
-        Log.d(LOG_TAG, "add log");
+                bdd.insert(DB_TABLE_NAME, null, values);
+                bdd.close();
+                Log.d(LOG_TAG, "add log");
+            }
+        } catch (SQLiteException e) {
+            Log.e(LOG_TAG, "Unable to write the db : " + e.toString());
+        }
     }
 }

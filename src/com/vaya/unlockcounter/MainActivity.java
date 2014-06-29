@@ -2,6 +2,7 @@ package com.vaya.unlockcounter;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.backup.BackupManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.jjoe64.graphview.*;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -161,7 +161,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         super.onResume();
         refresh_all();
 
-
+        BackupManager bu = new BackupManager(this);
+        bu.dataChanged();
     }
 
     @Override
