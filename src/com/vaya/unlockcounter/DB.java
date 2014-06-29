@@ -17,7 +17,7 @@ public class DB extends SQLiteOpenHelper {
     static final Object sDataLock = new Object();
     public static final String LOG_TAG = "UC_SQLITE";
     private Context ctxt;
-    public static final String DB_NAME = "log.db";
+    public static final String DB_NAME = "log.db    ";
     private static final String DB_TABLE_NAME = "log";
     private static final int DB_VERSION = 1;
     private static final String DB_CREATE =

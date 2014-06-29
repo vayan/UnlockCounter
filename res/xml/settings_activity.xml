@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory android:title="Global" >
-        <Preference
-                android:key="deletedb"
-                android:summary="Delete all the history, start fresh :)"
+
+        <com.vaya.unlockcounter.mDialogPref
+                android:dialogTitle="Really?!"
+                android:dialogMessage="You really want to delete ?"
+                android:key="really_delete"
                 android:title="Delete History"
-                />
+                android:summary="Delete all the history, start fresh :)"
+                android:defaultValue="Default Value" />
         <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="use_dark_theme"
