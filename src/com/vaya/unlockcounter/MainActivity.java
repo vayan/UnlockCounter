@@ -24,6 +24,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public static final Double[] timestamp_to_reduce = new Double[] {86400000d, 604800000d, 2628000000d, 15770000000d, 31540000000000d};
     private static final String activity_title = "Unlock Counter";
     private GraphView graphView = null;
+    private BackupManager bu = new BackupManager(this);;
 
     private void updateTheme() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -153,16 +154,15 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         spinner.setSelection(get_current_spinner_selection());
         spinner.setAdapter(adapter);
         refresh_all();
+        bu.dataChanged();
     }
 
     @Override
     protected void onResume() {
         Log.d(LOG_TAG, "MainActivity resume");
         super.onResume();
-        refresh_all();
-
-        BackupManager bu = new BackupManager(this);
         bu.dataChanged();
+        refresh_all();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.vaya.unlockcounter;
 
 import android.app.backup.*;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -11,9 +12,8 @@ import java.io.IOException;
 public class mBackupAgent extends BackupAgentHelper {
 
     // The name of the SharedPreferences file
-    static final String PREFS = "user_preferences";
-    static final String LOCK_LOGS = "log.db";
-
+    public static final String LOG_TAG = "BU";
+    static final String PREFS = "com.vaya.unlockcounter_preferences";
 
     // A key to uniquely identify the set of backup data
     static final String PREFS_BACKUP_KEY = "prefs";
@@ -23,18 +23,21 @@ public class mBackupAgent extends BackupAgentHelper {
     // Allocate a helper and add it to the backup agent
     @Override
     public void onCreate() {
-        FileBackupHelper helperData = new FileBackupHelper(this, LOCK_LOGS);
+        FileBackupHelper helperData = new FileBackupHelper(this,
+                "../databases/" + DB.DB_NAME);
+
         SharedPreferencesBackupHelper helperPrefs = new SharedPreferencesBackupHelper(this, PREFS);
 
         addHelper(PREFS_BACKUP_KEY, helperPrefs);
         addHelper(FILES_BACKUP_KEY, helperData);
-
+        Log.d(LOG_TAG, "backup agent created !");
     }
 
     @Override
     public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data,
                          ParcelFileDescriptor newState) throws IOException {
         // Hold the lock while the FileBackupHelper performs backup
+        Log.d(LOG_TAG, "backing up app data");
         synchronized (DB.sDataLock) {
             super.onBackup(oldState, data, newState);
         }
@@ -44,6 +47,7 @@ public class mBackupAgent extends BackupAgentHelper {
     public void onRestore(BackupDataInput data, int appVersionCode,
                           ParcelFileDescriptor newState) throws IOException {
         // Hold the lock while the FileBackupHelper restores the file
+        Log.d(LOG_TAG, "restoring up app data");
         synchronized (DB.sDataLock) {
             super.onRestore(data, appVersionCode, newState);
         }

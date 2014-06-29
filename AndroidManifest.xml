@@ -16,7 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:backupAgent="mBackupAgent"
+        android:backupAgent=".mBackupAgent"
         android:restoreAnyVersion="true"
         android:theme="@style/AppTheme" >
         <activity
